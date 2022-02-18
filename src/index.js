@@ -5,14 +5,15 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './configs/store';
+import cbhistory from './configs/history';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter history={cbhistory}>
         <App/>
-      </BrowserRouter>
-    </Provider>
+        </BrowserRouter>
+      </Provider>   
   </React.StrictMode>,
   document.getElementById('root')
 );

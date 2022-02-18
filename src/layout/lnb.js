@@ -1,22 +1,31 @@
-import {  Button, List, ListItem } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom"
+import {  Icon, List, ListItem, ListItemButton } from "@mui/material";
+import { Link as RouterLink, useLocation } from "react-router-dom"
 import routes from "../configs/rootRoutes";
 
 const Lnb = () => {
+    const loc = useLocation();
     const sidemenus = routes.find((r) => {
         return r.path === '/p';
-    })?.children;
+    })?.children.filter((ch)=>{
+        return ch.visible
+    });
 
     return (
-        <div style={{"borderRight":"1px solid #999", "minHeight":"500px"}}>
-            <h3>lnb</h3>
+        <div>
             <List>
-                {
-                    (sidemenus).map((sidemenu) => {
-                        console.log(sidemenu.path)
-                        return (sidemenu.path) && <ListItem key={sidemenu.path}><Button variant="outlined" fullWidth={true} component={RouterLink} to={sidemenu.path}>{sidemenu.name}</Button></ListItem>
-                    })
-                }
+                {(sidemenus).map((sidemenu) => {
+                    return (sidemenu.path) && 
+                        <ListItem key={sidemenu.path} disablePadding>
+                            <ListItemButton 
+                                component={RouterLink} 
+                                to={sidemenu.path} 
+                                selected={loc.pathname.indexOf(sidemenu.path) > -1}
+                            >
+                                {sidemenu.icon && (<Icon style={{fontSize: 15, marginRight:'.8em'}}>{sidemenu.icon}</Icon>)}
+                                {sidemenu.name}
+                            </ListItemButton>
+                        </ListItem>
+                })}
             </List>
         </div>
     )

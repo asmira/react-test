@@ -1,4 +1,4 @@
-import boardReducer from '../reducers/boardSlice'
+import boardReducer from './boardReducer'
 
 const reducer = {
     "board" : boardReducer

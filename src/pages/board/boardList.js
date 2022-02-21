@@ -1,25 +1,26 @@
 import { Button, Grid, Link, Table, TableBody, TableCell, TableFooter, TableHead, TableRow } from "@mui/material";
-import { Link as RouterLink, useOutletContext } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBoards } from "../../reducers/boardReducer";
 import PagingLayout from "../../components/pagingComponent";
+import { openSnackbar } from "../../reducers/snackbarReducer";
+import { toggleLoader } from "../../reducers/loaderReducer";
 
 /* 게시판 목록 페이지 */
 const Board = () => {
 
     const {list : {items, paging}, error, loading} = useSelector((state) => state.board);
-
+    const dispatch = useDispatch();
+    
     /* 공통 오류/로딩 처리 시작 */
-    const { snackbar, loader } = useOutletContext();
-    useEffect(() => loader.setLoading(loading), [loader, loading]);
-    useEffect(() => (!!error) && snackbar.open(error, 'danger'), [error, snackbar]);
+    useEffect(() => {dispatch(toggleLoader(loading))},[dispatch,loading]);
+    useEffect(() => {(!!error) && dispatch(openSnackbar({message: error, severity : "error"}))},[dispatch, error]);
     /* 공통 오류/로딩 처리 끝 */
 
     //페이징처리 시작
     const [boardOffset, setBoardOffset] = useState(paging?.offset || 0)
 
-    const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchBoards({offset:boardOffset, limit:10}))
     },[dispatch, boardOffset]);
@@ -31,7 +32,7 @@ const Board = () => {
                 <Grid container>
                     <h2>게시판</h2>
                 </Grid>
-                <Grid container justifyContent="flex-end">
+                <Grid container justifyContent="space-between">
                     총 {paging?.total || 0} 건
                     <Button variant="outlined" component={RouterLink} to="/p/boardForm">등록</Button>
                 </Grid>

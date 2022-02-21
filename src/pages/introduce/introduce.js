@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { openSnackbar } from "../../reducers/snackbarReducer";
 
 const Introduce = () => {
-    const { snackbar } = useOutletContext();
+    const dispatch = useDispatch()
     useEffect(() => {
-        snackbar.open("test","warning");
-    },[snackbar]);
+        dispatch(openSnackbar({message: "Test"}));
+    },[dispatch]);
     
     return (
         <div>

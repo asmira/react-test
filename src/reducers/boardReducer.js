@@ -1,5 +1,6 @@
 import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { deleteBoardApi, getBoardApi, getBoardsApi, postBoardApi, putBoardApi } from '../apis/boardApi'
+import { openSnackbar } from './snackbarReducer';
 
 // actions 
 export const fetchBoards = createAsyncThunk('BOARD/BOARDS', (payload) => {
@@ -11,25 +12,30 @@ export const fetchBoard = createAsyncThunk('BOARD/BOARD', (payload) => {
   return getBoardApi(id);
 });
 
-export const postBoard = createAsyncThunk('BOARD/CREATE_BOARD', (payload) => {
-  return !!(payload.data) && postBoardApi(payload.data).then(() =>{
-    (!!payload.successFn) && payload.successFn();
-    return payload;
+export const postBoard = createAsyncThunk('BOARD/CREATE_BOARD', ({data,navigate,message="등록에 성공하였습니다!"}, {dispatch}) => {
+  return !!data && postBoardApi(data).then(() => {
+    (!!navigate) && navigate();
+    (message !== "_") && dispatch(openSnackbar({message}));
+    return data;
   });
 });
 
-export const putBoard = createAsyncThunk('BOARD/UPDATE_BOARD', (payload) => {
-  console.log(payload)
-  const id = (!!payload?.data && typeof payload.data === 'object') ? payload?.data?.id : 0;
-  return !!(payload) && putBoardApi(id, payload.data).then(() => {
-    (!!payload.successFn) && payload.successFn();
-    return payload;
+export const putBoard = createAsyncThunk('BOARD/UPDATE_BOARD', ({data,navigate,message="수정에 성공하였습니다!"}, {dispatch}) => {
+  const id = data?.id || 0;
+  return !!data && putBoardApi(id, data).then(() => {
+    (!!navigate) && navigate();
+    (message !== "_") && dispatch(openSnackbar({message}));
+    return data;
   });
 });
 
-export const deleteBoard = createAsyncThunk('BOARD/DELETE_BOARD', (payload) => {
-  const id = (!!payload && typeof payload === 'object') ? payload.id : payload;
-  return deleteBoardApi(id);
+export const deleteBoard = createAsyncThunk('BOARD/DELETE_BOARD', ({data,navigate,message="삭제에 성공하였습니다!"}, {dispatch}) => {
+  const id = data?.id || 0;
+  return !!data && deleteBoardApi(id).then(() => {
+    (!!navigate) && navigate();
+    (message !== "_") && dispatch(openSnackbar({message}));
+    return data;
+  });
 });
 
 export const initList = createAction("INIT_LIST");
@@ -71,7 +77,6 @@ export const boardSlice = createSlice({
       state.view = {};
     },
     [fetchBoards.pending] : (state) => {
-      state.list= [];
       state.loading = true;
       state.error = "";
     },
@@ -99,20 +104,12 @@ export const boardSlice = createSlice({
     [postBoard.rejected] : (_, action) => {
       errorState(action.payload)
     },
-    [putBoard.fulfilled] : (state) => {
-      state.error = "";
-    },
     [putBoard.rejected] : (_, action) => {
       errorState(action.payload)
     },
     [deleteBoard.rejected] : (_, action) => {
       errorState(action.payload)
     },
-    [deleteBoard.fulfilled] : (state) => {
-      state.view= {};
-      state.loading = false;
-      state.error = "";
-    }
   }
 })
 

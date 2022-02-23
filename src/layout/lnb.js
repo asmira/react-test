@@ -1,15 +1,20 @@
 import {  Icon, List, ListItem, ListItemButton } from "@mui/material";
+import { useSelector } from "react-redux";
 import { Link as RouterLink, useLocation } from "react-router-dom"
-import routes from "../configs/rootRoutes";
+import authRoutes from "../configs/authRoutes";
 
 const Lnb = () => {
     const loc = useLocation();
-    const sidemenus = routes.find((r) => {
-        return r.path === '/p';
+    const {session} = useSelector((state)=>state.session);
+    
+    const sidemenus = authRoutes({session}).find((r) => {
+        return r.path === '/';
     })?.children.filter((ch)=>{
         return ch.visible
     });
 
+    const isSelected = (path) => loc.pathname.indexOf(path) > -1;
+    
     return (
         <div>
             <List>
@@ -19,7 +24,7 @@ const Lnb = () => {
                             <ListItemButton 
                                 component={RouterLink} 
                                 to={sidemenu.path} 
-                                selected={loc.pathname.indexOf(sidemenu.path) > -1}
+                                selected={isSelected(sidemenu.path)}
                             >
                                 {sidemenu.icon && (<Icon style={{fontSize: 15, marginRight:'.8em'}}>{sidemenu.icon}</Icon>)}
                                 {sidemenu.name}

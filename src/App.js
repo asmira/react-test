@@ -1,11 +1,13 @@
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline } from '@mui/material';
-import routes from './configs/rootRoutes';
-import { useRoutes } from 'react-router';
+import authRoutes from './configs/authRoutes';
+import { useRoutes, useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+//import anonymousRoutes from './configs/anonymousRoutes';
 
-const MyRoute = () => {
-  const myRoutes = useRoutes(routes);
-  return myRoutes;
+const AuthRoute = ({session}) => {
+  return useRoutes(authRoutes(session));
 }
 
 const darkTheme = createTheme({
@@ -15,10 +17,17 @@ const darkTheme = createTheme({
 });
 
 function App() {
+  const {session} = useSelector((state)=>state.session)
+  const navigate = useNavigate();
+  useEffect(()=>{
+    (!session.id) && navigate("/login",{replace:true});
+  },[session,navigate])
+
+
   return (
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <MyRoute/>
+        <AuthRoute session={session}/>
       </ThemeProvider>
   )
 }

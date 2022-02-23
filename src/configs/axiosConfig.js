@@ -1,12 +1,21 @@
 import axios from "axios";
 
 const axiosConfig = {
-
+    withCredentials: true,
 }
+
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    console.log("error occured! : ", error.response)
+    return Promise.reject(error);
+});
 
 const aget = (url, data, successFn, failFn) => {
     return axios({
         ...axiosConfig, 
+        withCredentials:true,
         url,
         method : "get",
         params: data
@@ -15,7 +24,7 @@ const aget = (url, data, successFn, failFn) => {
         return res.data;
     }).catch((err) => {
         (!!failFn) && failFn();
-        return err;
+        return Promise.reject(err);
     });
 }
 
@@ -30,7 +39,7 @@ const apost = (url, data, successFn, failFn) => {
         return res.data;
     }).catch((err) => {
         (!!failFn) && failFn();
-        return err;
+        return Promise.reject(err);
     });
 }
 
@@ -46,7 +55,7 @@ const aput = (url, data, successFn, failFn) => {
         return res.data;
     }).catch((err) => {
         (!!failFn) && failFn();
-        return err;
+        return Promise.reject(err);
     });
 }
 
@@ -61,7 +70,7 @@ const adelete = (url, data, successFn, failFn) => {
         return res.data;
     }).catch((err) => {
         (!!failFn) && failFn();
-        return err;
+        return Promise.reject(err);
     });
 }
 

@@ -1,23 +1,21 @@
-import Home from "../pages/home";
 import Introduce from "../pages/introduce/introduce";
 import Board from "../pages/board/boardList";
 import Faq from "../pages/faq/faq";
 import BoardView from "../pages/board/boardView";
 import Layout from "../layout/layout";
 import BoardForm from "../pages/board/boardForm";
+import { Memo } from "../pages/memo/memo";
+import { Navigate } from "react-router-dom";
+import Home from "../pages/home";
 
-const routes = [
+const authRoutes = (session) => [
     {
         path: "/",
-        element: <Home />,
-    },
-    {
-        path: "/p",
-        element: <Layout />,
+        element: (session?.id)?<Layout />:<Navigate to="/login" />,
         children: [
         {
             index: true,
-            element : <Introduce />
+            element : <Introduce/>
         },
         {
             path: "introduce",
@@ -54,8 +52,19 @@ const routes = [
             visible: true,
             icon: "question_answer",
             element : <Faq />
-        }]
+        },
+        {
+            path: "memo",
+            name: "MEMO",
+            visible: true,
+            icon: "question_answer",
+            element : <Memo />
+        }
+    ]},
+    {
+        path: '/login',
+        element: <Home/>
     }
 ];
 
-export default routes;
+export default authRoutes;

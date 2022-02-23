@@ -28,13 +28,13 @@ export default function BoardView() {
         <div>
             <h3>게시판</h3>
             <Box sx={{justifyContent: 'flex-start'}}>
-                <Button variant="outlined" component={Link} to={`/p/boardForm/${params.id}`}>수정</Button>
+                <Button variant="outlined" component={Link} to={`/boardForm/${params.id}`}>수정</Button>
                 <Button variant="outlined" onClick={
                 () => {dispatch(deleteBoard({
                     data:{id:params.id},
-                    navigate:()=>{navigate("/p/board",{replace:true})},
+                    navigate:()=>{navigate("/board",{replace:true})},
                 }))}}>삭제</Button>
-                <Button variant="outlined" component={Link} to={`/p/board`}>목록</Button>
+                <Button variant="outlined" component={Link} to={`/board`}>목록</Button>
             </Box>
             <Table>
                 <TableBody>

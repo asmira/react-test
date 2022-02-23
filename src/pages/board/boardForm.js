@@ -22,21 +22,16 @@ export default function BoardForm() {
     /* 공통 오류/로딩 처리 끝 */
 
     const mode = (params.id) ? 'UPDATE' : 'CREATE';
-    const cancelUrl = (mode === 'UPDATE') ? `/p/board/${params.id}` : `/p/board`
+    const modeTxt = (mode === 'UPDATE')?'수정':'등록';
+    const cancelUrl = (mode === 'UPDATE') ? `/board/${params.id}` : `/board`
    
     const { handleSubmit, control, register, reset } = useForm();
     const onSubmit  = (data) => {
         if (mode === 'UPDATE') {
-            dispatch(putBoard({
-                data,
-                navigate:()=>{navigate(cancelUrl,{replace:true})}
-            }));
+            dispatch(putBoard({data,navigate:()=>{navigate(cancelUrl,{replace:true})}}));
         } else if(mode === 'CREATE') {
             dispatch(initList());
-            dispatch(postBoard({
-                data,
-                navigate:()=>{navigate(cancelUrl,{replace:true})}
-            }));
+            dispatch(postBoard({data,navigate:()=>{navigate(cancelUrl,{replace:true})}}));
         }
     }
     
@@ -46,24 +41,18 @@ export default function BoardForm() {
     
     return (
         <div>
-            <h3>게시물 {mode === 'UPDATE'?'수정':'등록'}</h3>
+            <h3>게시물 {modeTxt}</h3>
             <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
+                {(mode === 'UPDATE') && (
+                    <Input {...register("id")} type="hidden" name="id" value={view.id||0}/>
+                )}
                 <Box sx={{justifyContent: 'flex-start'}}>
-                    {mode === 'UPDATE' ?
-                    <Button variant="outlined" type="submit">수정</Button>
-                    :
-                    <Button variant="outlined" type="submit">등록</Button>
-                    }
+                    <Button variant="outlined" type="submit">{modeTxt}</Button>
                     <Button variant="outlined" onClick={()=>reset()}>리셋</Button>               
                     <Button variant="outlined" component={Link} to={cancelUrl}>취소</Button>
                 </Box>
                 <Table>
                     <TableBody>
-                        {(mode === 'UPDATE') && (
-                        <TableRow>
-                            <TableCell>{view.id}<Input {...register("id")} type="hidden" name="id" value={view.id||0}/></TableCell>
-                        </TableRow>
-                        )}
                         <TableRow>                        
                             <TableCell>
                                 <FormText 
@@ -101,7 +90,6 @@ export default function BoardForm() {
                         </TableRow>
                     </TableBody>
                 </Table>
-                
             </form>
         </div>
     )

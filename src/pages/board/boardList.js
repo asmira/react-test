@@ -34,7 +34,7 @@ const Board = () => {
                 </Grid>
                 <Grid container justifyContent="space-between">
                     총 {paging?.total || 0} 건
-                    <Button variant="outlined" component={RouterLink} to="/p/boardForm">등록</Button>
+                    <Button variant="outlined" component={RouterLink} to="/boardForm">등록</Button>
                 </Grid>
                 <Grid container>
                     <Table>
@@ -51,7 +51,7 @@ const Board = () => {
                             return <TableRow key={idx}>
                                 <TableCell>{paging.total - boardOffset - idx}</TableCell>
                                 <TableCell>
-                                    <Link component={RouterLink} to={`/p/board/${item.id}`}>{item.title}</Link>
+                                    <Link component={RouterLink} to={`/board/${item.id}`}>{item.title}</Link>
                                 </TableCell>
                                 <TableCell>{item.writer}</TableCell>
                                 <TableCell>{item.regdate}</TableCell>                                                                        

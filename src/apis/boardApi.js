@@ -1,6 +1,6 @@
 import { adelete, aget, apost, aput } from "../configs/axiosConfig";
 
-const targetBE = 'http://49.247.24.232:3000';
+const targetBE = process.env.REACT_APP_BACKEND_URI;
 
 const getBoardsApi = (payload) => { 
     return aget(`${targetBE}/board`,payload);
@@ -16,7 +16,6 @@ const postBoardApi = (payload) => {
 
 const putBoardApi = (id, payload) => {
     delete payload.id;
-    console.log(id,payload)
     return aput(`${targetBE}/board/${id}`,payload)
 }
 

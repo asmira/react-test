@@ -3,6 +3,7 @@ import Board from "../pages/board/boardList";
 import Faq from "../pages/faq/faq";
 import BoardView from "../pages/board/boardView";
 import BoardForm from "../pages/board/boardForm";
+import Usage from "../pages/usage/usage";
 
 const authRoutes = [
     {
@@ -17,6 +18,20 @@ const authRoutes = [
         element : <Introduce />
     },
     {
+        path: "usage",
+        name: "How to Use",
+        visible: true,
+        icon: "mouse",
+        element: <Usage />
+    },
+    {
+        path: "board",
+        name: "게시판",
+        icon: "notes",
+        visible: true,
+        element : <Board />
+    },
+    {
         path: "boardForm/",
         name: "게시판등록",
         element : <BoardForm />
@@ -25,13 +40,6 @@ const authRoutes = [
         path: "boardForm/:id",
         name: "게시판수정",
         element : <BoardForm />
-    },
-    {
-        path: "board",
-        name: "게시판",
-        icon: "notes",
-        visible: true,
-        element : <Board />
     },
     {
         path: "board/:id",

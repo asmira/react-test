@@ -1,4 +1,4 @@
-import { Box, Button, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Box, Button, Grid, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -35,9 +35,11 @@ const BoardView = () => {
 
     /* render view */
     return (
-        <div>
-            <h3>게시판</h3>
-            <Box sx={{justifyContent: 'flex-start'}}>
+        <Box>
+            <Grid container>
+                <h2>게시판</h2>
+            </Grid>
+            <Box sx={{display: 'flex', justifyContent: 'flex-end',}}>
                 <Button variant="outlined" component={Link} to={`/boardForm/${params.id}`}>수정</Button>
                 <Button variant="outlined" onClick={() => deleteBoardDispatch()}>삭제</Button>
                 <Button variant="outlined" component={Link} to={`/board`}>목록</Button>
@@ -66,7 +68,7 @@ const BoardView = () => {
                     </TableRow>
                 </TableBody>
             </Table>
-        </div>
+        </Box>
     )
 }
 

@@ -1,4 +1,4 @@
-import {  Icon, List, ListItem, ListItemButton } from "@mui/material";
+import {  Box, Icon, List, ListItem, ListItemButton, ListItemIcon } from "@mui/material";
 import { Link as RouterLink, useLocation } from "react-router-dom"
 import authRoutes from "../routes/authRoutes";
 
@@ -11,7 +11,7 @@ const Lnb = () => {
     const isSelected = (path) => loc.pathname.indexOf(path) > -1;
     
     return (
-        <div>
+        <Box>
             <List>
             {(sidemenus).map((sidemenu) => {
             return (sidemenu.path) && 
@@ -21,13 +21,13 @@ const Lnb = () => {
                         to={sidemenu.path} 
                         selected={isSelected(sidemenu.path)}
                     >
-                        {sidemenu.icon && (<Icon style={{fontSize: 15, marginRight:'.8em'}}>{sidemenu.icon}</Icon>)}
+                        {sidemenu.icon && (<ListItemIcon><Icon>{sidemenu.icon}</Icon></ListItemIcon>)}
                         {sidemenu.name}
                     </ListItemButton>
                 </ListItem>
             })}
             </List>
-        </div>
+        </Box>
     )
 }
 

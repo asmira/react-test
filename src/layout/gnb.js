@@ -9,8 +9,12 @@ const Gnb = () => {
         <AppBar position="static">
             <Toolbar>
                 <Typography variant="h5" noWrap component="div" sx={{ flexGrow:1 }}><b>React + MUI + ReduxToolkit</b></Typography>
-                <Typography noWrap fontSize={13} component="div" sx={{ mr:2 }}>{session.userid}님 환영합니다.</Typography>
-                <Button size="small" variant="outlined" onClick={()=>dispatch(postLogout())}>로그아웃</Button>
+            {session?.id ?
+                <>
+                    <Typography noWrap fontSize={13} component="div" sx={{ mr:2 }}>{session.userid}님 환영합니다.</Typography>
+                    <Button size="small" variant="outlined" onClick={()=>dispatch(postLogout())}>로그아웃</Button>
+                </>
+                : <Typography>로그인 해주세요</Typography>}
             </Toolbar>
         </AppBar>
     )

@@ -1,4 +1,4 @@
-import { Button, Input, Table, TableBody, TableCell, TableRow } from "@mui/material";
+import { Button, Container, Grid, Input, Table, TableBody, TableCell, TableRow } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -20,35 +20,40 @@ export default function BoardForm() {
     useEffect(() => {dispatch(toggleLoader(loading))},[dispatch,loading]);
     useEffect(() => {(error) && dispatch(snackError(error))},[dispatch, error]);
 
+    /* form mode variables */
     const mode = (params.id) ? 'UPDATE' : 'CREATE';
     const modeTxt = (mode === 'UPDATE')?'수정':'등록';
     const cancelUrl = (mode === 'UPDATE') ? `/board/${params.id}` : `/board`
-   
+    
+    /* configs for react-hook-form */
     const { handleSubmit, control, register, reset } = useForm();
     const onSubmit  = (data) => {
         if (mode === 'UPDATE') {
             dispatch(putBoard({data, errorMsg:"수정중 오류가 발생하였습니다."}))
-                .then(()=>{navigate(cancelUrl,{replace:true})});
+                .then((res)=>{(!res.error) && navigate(cancelUrl,{replace:true})});
         } else if(mode === 'CREATE') {
             dispatch(initList());
             dispatch(postBoard({data}))
-                .then(()=>{navigate(cancelUrl,{replace:true})});
+                .then((res)=>{(!res.error) && navigate(cancelUrl,{replace:true})});
         }
     }
     
+    /* get board data for update */
     useEffect(() => {
         (mode === 'UPDATE') 
             && dispatch(fetchBoard({id:params.id}));
     },[dispatch, params, mode]);
     
     return (
-        <div>
-            <h3>게시물 {modeTxt}</h3>
+        <Box>
+            <Grid container>
+                <h2>게시판 {modeTxt}</h2>
+            </Grid>
             <form name="bform" onSubmit={handleSubmit(onSubmit)} noValidate>
                 {(mode === 'UPDATE') && (
                     <Input {...register("id")} type="hidden" name="id" value={view.id||0}/>
                 )}
-                <Box sx={{justifyContent: 'flex-start'}}>
+                <Box sx={{display: 'flex', justifyContent: 'flex-end',}}>
                     <Button variant="outlined" type="submit">{modeTxt}</Button>
                     <Button variant="outlined" onClick={()=>reset()}>리셋</Button>               
                     <Button variant="outlined" component={Link} to={cancelUrl}>취소</Button>
@@ -93,6 +98,6 @@ export default function BoardForm() {
                     </TableBody>
                 </Table>
             </form>
-        </div>
+        </Box>
     )
 }

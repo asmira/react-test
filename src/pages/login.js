@@ -7,17 +7,14 @@ import { FormText, FormPassword } from "../components/formComponents";
 import SnackBarComponent from "../components/snackbarComponent";
 import { fetchSessionInfo, postLogin } from "../reducers/sessionReducer";
 
-const Home = () => {
+const Login = () => {
     const {session} = useSelector((state)=>state.session)
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log("???")
-        dispatch(fetchSessionInfo());
-    },[dispatch]);
+    useEffect(() => dispatch(fetchSessionInfo()),[dispatch]);
 
-    useEffect(()=>{
+    useEffect(()=>{ //로그인 성공시 root page로 강제이동
       (session?.id) && navigate("/",{replace:true});
     },[session,navigate])
 
@@ -58,4 +55,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default Login;

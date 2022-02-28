@@ -11,8 +11,8 @@ import { closeSnackbar } from '../reducers/snackbarReducer';
 
   const AVAILABLE_SEVERITY = ["error","info","success","warning"];
 
-  export default function SnackBarComponent(props) {
-    const {isOpen, severity, message, label} = useSelector((state) => state.snackbar);
+  export default function SnackBarComponent() {
+    const {isOpen, severity, message} = useSelector((state) => state.snackbar);
    
     const dispatch = useDispatch();
 

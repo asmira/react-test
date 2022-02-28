@@ -4,27 +4,28 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBoards } from "../../reducers/boardReducer";
 import PagingLayout from "../../components/pagingComponent";
-import { openSnackbar } from "../../reducers/snackbarReducer";
+import { snackError, snackSuccess } from "../../reducers/snackbarReducer";
 import { toggleLoader } from "../../reducers/loaderReducer";
 
 /* 게시판 목록 페이지 */
 const Board = () => {
 
-    const {list : {items, paging}, error, loading} = useSelector((state) => state.board);
     const dispatch = useDispatch();
-    
-    /* 공통 오류/로딩 처리 시작 */
-    useEffect(() => {dispatch(toggleLoader(loading))},[dispatch,loading]);
-    useEffect(() => {(!!error) && dispatch(openSnackbar({message: error, severity : "error"}))},[dispatch, error]);
-    /* 공통 오류/로딩 처리 끝 */
 
-    //페이징처리 시작
+    const {list : {items, paging}, error, loading} = useSelector((state) => state.board);
+
+    /* common loading, error handler */
+    useEffect(() => {dispatch(toggleLoader(loading))},[dispatch,loading]);
+    useEffect(() => {(error) && dispatch(snackError(error))},[dispatch, error]);
+
+    /* paging state */
     const [boardOffset, setBoardOffset] = useState(paging?.offset || 0)
 
+    /* get list on loading and paging */
     useEffect(() => {
         dispatch(fetchBoards({offset:boardOffset, limit:10}))
+            .then(() => dispatch(snackSuccess("loaded"))); // promise dispatch test
     },[dispatch, boardOffset]);
-    //페이징처리 끝
 
     return (
         <div>

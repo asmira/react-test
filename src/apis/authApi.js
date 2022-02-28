@@ -1,4 +1,4 @@
-import { adelete, aget, apost, aput } from "../configs/axiosConfig";
+import { aget, apost } from "../configs/axiosConfig";
 
 const targetBE = process.env.REACT_APP_AUTH_URI + "/auth";
 

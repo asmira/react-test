@@ -1,13 +1,4 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { openSnackbar } from "../../reducers/snackbarReducer";
-
 const Introduce = () => {
-    const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(openSnackbar({message: "Test"}));
-    },[dispatch]);
-    
     return (
         <div>
             <h2>React + MUI + Redux-Toolkit</h2>

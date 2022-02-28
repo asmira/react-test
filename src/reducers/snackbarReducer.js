@@ -1,8 +1,4 @@
-import { createAction, createSlice } from '@reduxjs/toolkit'
-
-
-export const openSnackbar = createAction("OPEN_SNACKBAR");
-export const closeSnackbar = createAction("CLOSE_SNACKBAR");
+import { createSlice } from '@reduxjs/toolkit'
 
 // init states
 const initialState = {
@@ -10,27 +6,46 @@ const initialState = {
   message: "",
   severity: "success",
   label: "",
-  error: "",
 }
 
 // slice
+// const AVAILABLE_SEVERITY = ["error","info","success","warning"];
 export const snackbarSlice = createSlice({
   name: 'snackbar',
   initialState,
-  reducers: {},
-  extraReducers: {
-    [openSnackbar] : (state, action) => {
-        state.isOpen = true;
-        state.message = action.payload?.message;
-        state.severity = action.payload?.severity;
-        state.label = action.payload?.label;
+  reducers: {
+    snackError : (state,action) => {
+      state.isOpen = true;
+      state.message = action.payload;
+      state.severity = "error"
     },
-    [closeSnackbar] : (state) => {
+    snackInfo : (state,action) => {
+      state.isOpen = true;
+      state.message = action.payload;
+      state.severity = "success"
+    },
+    snackWarning : (state,action) => {
+      state.isOpen = true;
+      state.message = action.payload;
+      state.severity = "success"
+    },
+    snackSuccess : (state,action) => {
+      state.isOpen = true;
+      state.message = action.payload;
+      state.severity = "success"
+    },
+    openSnackbar : (state, action) => {
+      state.isOpen = true;
+      state.message = action.payload?.message;
+      state.severity = action.payload?.severity;
+    },
+    closeSnackbar : (state) => {
         state.isOpen = false;
         state.message = "";
-        state.label = "";
     }
-  }
-})
+  },
+  extraReducers: {}
+});
 
-export default snackbarSlice.reducer
+export const {snackError, snackInfo, snackWarning, snackSuccess, openSnackbar, closeSnackbar} = snackbarSlice.actions;
+export default snackbarSlice.reducer;

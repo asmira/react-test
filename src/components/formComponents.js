@@ -16,6 +16,7 @@ export const FormText = ({ name, control, defaultValue="", rules, label, ...prop
                         name={name} 
                         onChange={onChange} 
                         value={value || defaultValue}
+                        autoComplete="username"
                         label={label} 
                         error={!!error} 
                         helperText={error ? error.message:null}

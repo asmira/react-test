@@ -7,7 +7,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { FormText, FormTextArea } from "../../components/formComponents";
 import { fetchBoard, initList, postBoard, putBoard } from "../../reducers/boardReducer";
 import { toggleLoader } from "../../reducers/loaderReducer";
-import { openSnackbar } from "../../reducers/snackbarReducer";
+import { snackError } from "../../reducers/snackbarReducer";
 
 export default function BoardForm() {
     const params = useParams();
@@ -16,10 +16,9 @@ export default function BoardForm() {
 
     const { view, error, loading } = useSelector((state) => state.board);
         
-    /* 공통 오류/로딩 처리 시작 */
+    /* common loading, error handler */
     useEffect(() => {dispatch(toggleLoader(loading))},[dispatch,loading]);
-    useEffect(() => {(!!error) && dispatch(openSnackbar({message: error, severity : "error"}))},[dispatch, error]);
-    /* 공통 오류/로딩 처리 끝 */
+    useEffect(() => {(error) && dispatch(snackError(error))},[dispatch, error]);
 
     const mode = (params.id) ? 'UPDATE' : 'CREATE';
     const modeTxt = (mode === 'UPDATE')?'수정':'등록';
@@ -28,15 +27,18 @@ export default function BoardForm() {
     const { handleSubmit, control, register, reset } = useForm();
     const onSubmit  = (data) => {
         if (mode === 'UPDATE') {
-            dispatch(putBoard({data,navigate:()=>{navigate(cancelUrl,{replace:true})}}));
+            dispatch(putBoard({data, errorMsg:"수정중 오류가 발생하였습니다."}))
+                .then(()=>{navigate(cancelUrl,{replace:true})});
         } else if(mode === 'CREATE') {
             dispatch(initList());
-            dispatch(postBoard({data,navigate:()=>{navigate(cancelUrl,{replace:true})}}));
+            dispatch(postBoard({data}))
+                .then(()=>{navigate(cancelUrl,{replace:true})});
         }
     }
     
     useEffect(() => {
-        (mode === 'UPDATE') && dispatch(fetchBoard({id:params.id}))       
+        (mode === 'UPDATE') 
+            && dispatch(fetchBoard({id:params.id}));
     },[dispatch, params, mode]);
     
     return (

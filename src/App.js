@@ -1,15 +1,24 @@
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline } from '@mui/material';
-import authRoutes from './configs/authRoutes';
 import { useRoutes, useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-//import anonymousRoutes from './configs/anonymousRoutes';
+import { toggleLoader } from './reducers/loaderReducer';
+import { snackError } from './reducers/snackbarReducer';
+import rootRoutes from './routes/rootRoutes';
 
-const AuthRoute = ({session}) => {
-  return useRoutes(authRoutes(session));
+/**
+ * dynamic routing with session
+ * @param {session} session sessionStore value 
+ * @returns useRoutes
+ */
+const Route = ({session}) => {
+  return useRoutes(rootRoutes(session));
 }
 
+/**
+ * MUI common theme
+ */
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -17,17 +26,24 @@ const darkTheme = createTheme({
 });
 
 function App() {
-  const {session} = useSelector((state)=>state.session)
+  const {session, loading, error} = useSelector((state)=>state.session)
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  /* common loading, error handler */
+  useEffect(() => {dispatch(toggleLoader(loading))},[dispatch,loading]);
+  useEffect(() => {(error) && dispatch(snackError(error))},[dispatch, error]);
+
+  /* navigate to login when session not found */
   useEffect(()=>{
     (!session.id) && navigate("/login",{replace:true});
   },[session,navigate])
 
-
+  /* base app rendering */
   return (
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        <AuthRoute session={session}/>
+        <Route session={session}/>
       </ThemeProvider>
   )
 }

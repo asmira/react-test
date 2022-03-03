@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Link, Table, TableBody, TableCell, TableFooter, TableHead, TableRow } from "@mui/material";
+import { Box, Button, Grid, Link, Table, TableBody, TableCell, TableFooter, TableHead, TableRow, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,50 @@ import { fetchBoards } from "../../reducers/boardReducer";
 import PagingLayout from "../../components/pagingComponent";
 import { snackError, snackSuccess } from "../../reducers/snackbarReducer";
 import { toggleLoader } from "../../reducers/loaderReducer";
+import { closeChildModal, closeGrandChildModal, closeModal, openChildModal, openGrandChildModal, openModal } from "../../reducers/modalReducer";
+
+const TestGrandChildModal =() => {
+    const dispatch = useDispatch();
+    const handleClose = () => dispatch(closeGrandChildModal());
+    return (
+        <>
+            <Typography>GRAND CHILD</Typography>
+            <Button onClick={handleClose}>close this</Button>
+        </>
+    )
+}
+
+const TestChildModal = () => {
+    const dispatch = useDispatch();
+    const handleGrandChildOpen = () => dispatch(openGrandChildModal({
+        title: "grand child modal",
+        content: <TestGrandChildModal/>
+    }));
+    const handleClose = () => dispatch(closeChildModal());
+    return (
+        <>
+            <Typography>CHILD</Typography>
+            <Button onClick={handleGrandChildOpen}>open grandchildModal</Button>
+            <Button onClick={handleClose}>close this</Button>
+        </>
+    )
+}
+
+const TestModal = () => {
+    const dispatch = useDispatch();
+    const handleChildOpen = () => dispatch(openChildModal({
+        title: "child modal",
+        content: <TestChildModal/>
+    }));
+    const handleClose = () => dispatch(closeModal());
+    return (
+        <>
+            <Typography>MODAL</Typography>
+            <Button onClick={handleChildOpen}>open childModal</Button>
+            <Button onClick={handleClose}>close this</Button>
+        </>
+    )
+}
 
 /* 게시판 목록 페이지 */
 const Board = () => {
@@ -27,6 +71,15 @@ const Board = () => {
             .then(() => dispatch(snackSuccess("loaded"))); // promise dispatch test
     },[dispatch, boardOffset]);
 
+    /* open modal test */
+    const handleModal = () =>{
+        dispatch(openModal({
+            type: "",//component, alert, confirm
+            title: "title",
+            content: <TestModal />,
+        }))
+    }
+
     return (
         <Box>
             <Grid container>
@@ -35,6 +88,7 @@ const Board = () => {
             <Grid container justifyContent="space-between">
                 총 {paging?.total || 0} 건
                 <Button variant="outlined" component={RouterLink} to="/boardForm">등록</Button>
+                <Button onClick={handleModal}>모달테스트</Button>
             </Grid>
             <Grid container>
                 <Table>

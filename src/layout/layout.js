@@ -1,6 +1,7 @@
 import { Container, Grid, Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import LoaderComponent from "../components/loaderComponent";
+import ModalComponent from "../components/modalComponent";
 import SnackBarComponent from "../components/snackbarComponent";
 
 //import Footer from "./footer";
@@ -27,6 +28,7 @@ const Layout = () => {
             </Stack>
             <LoaderComponent/>
             <SnackBarComponent />
+            <ModalComponent />
         </>
     )
 }

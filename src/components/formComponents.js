@@ -15,7 +15,7 @@ export const FormText = ({ name, control, defaultValue="", rules, label, ...prop
                     <TextField 
                         name={name} 
                         onChange={onChange} 
-                        value={value || defaultValue}
+                        value={value}
                         autoComplete="username"
                         label={label} 
                         error={!!error} 
@@ -43,7 +43,7 @@ export const FormPassword = ({ name, control, label, defaultValue="",rules, ...p
                         type="password"
                         name={name} 
                         onChange={onChange} 
-                        value={value || defaultValue}
+                        value={value}
                         label={label} 
                         error={!!error} 
                         helperText={error ? error.message:null}
@@ -73,7 +73,7 @@ export const FormTextArea = ({ name, control, label, defaultValue,rules, ...prop
                         multiline 
                         rows={4} 
                         name={name} 
-                        value={value || defaultValue} 
+                        value={value} 
                         label={label} 
                         onChange={onChange} 
                         error={!!error} 

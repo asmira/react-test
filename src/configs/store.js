@@ -6,7 +6,7 @@ export const store = configureStore({
   reducer,
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware({
-      serializableCheck: {ignoredActionPaths: ['meta.arg','payload.successFn']}
+      serializableCheck: false,//{ignoredActionPaths: ['meta.arg','payload.successFn','modal.modal.content','payload.content']}
     }).concat(logger)
   },
 })

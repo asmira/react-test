@@ -4,16 +4,24 @@ import { closeChildModal, closeGrandChildModal, closeModal } from "../reducers/m
 import { useRef } from 'react';
 import Draggable from 'react-draggable';
 
-const style = {
+export const btnBoxStyle = {
+    mt:2,
+    pt:2, 
+    display: 'flex',
+    justifyContent:'flex-end',
+    borderTop:'1px solid #999'
+}
+
+export const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'rgba(0, 0, 0)',
-    border: '2px solid #000',
+    width: 800,
+    bgcolor: 'rgba(52,52,52)',
+    border: '1px solid #555',
     boxShadow: 24,
-    p: 4,
+    p: 2,
 };
 
 const ModalComponent = () => {
@@ -35,11 +43,11 @@ const ModalComponent = () => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
-                    <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Box sx={modalStyle}>
+                        <Typography id="modal-modal-title" variant="h5" component="h2">
                             {title}
                         </Typography>
-                        <Box>
+                        <Box sx={{mt:2}}>
                         {content}
                         </Box>
                     </Box>
@@ -69,11 +77,11 @@ const ChildModal = (props) => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
-                    <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Box sx={modalStyle}>
+                        <Typography id="modal-modal-title" variant="h5" component="h2">
                             {title}
                         </Typography>
-                        <Box>
+                        <Box sx={{mt:2}}>
                         {content}
                         </Box>
                     </Box>
@@ -103,11 +111,11 @@ const GrandChildModal = () =>{
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     >
-                    <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Box sx={modalStyle}>
+                        <Typography id="modal-modal-title" variant="h5" component="h2">
                             {title}
                         </Typography>
-                        <Box>
+                        <Box sx={{mt:2}}>
                         {content}
                         </Box>
                     </Box>

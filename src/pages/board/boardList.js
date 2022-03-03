@@ -7,6 +7,7 @@ import PagingLayout from "../../components/pagingComponent";
 import { snackError, snackSuccess } from "../../reducers/snackbarReducer";
 import { toggleLoader } from "../../reducers/loaderReducer";
 import { closeChildModal, closeGrandChildModal, closeModal, openChildModal, openGrandChildModal, openModal } from "../../reducers/modalReducer";
+import { btnBoxStyle } from "../../components/modalComponent";
 
 const TestGrandChildModal =() => {
     const dispatch = useDispatch();
@@ -14,7 +15,9 @@ const TestGrandChildModal =() => {
     return (
         <>
             <Typography>GRAND CHILD</Typography>
-            <Button onClick={handleClose}>close this</Button>
+            <Box sx={btnBoxStyle} >
+                <Button variant="outlined" onClick={handleClose}>close this</Button>
+            </Box>
         </>
     )
 }
@@ -29,8 +32,10 @@ const TestChildModal = () => {
     return (
         <>
             <Typography>CHILD</Typography>
-            <Button onClick={handleGrandChildOpen}>open grandchildModal</Button>
-            <Button onClick={handleClose}>close this</Button>
+            <Box sx={btnBoxStyle} >
+                <Button variant="outlined" sx={{mr:2}} onClick={handleGrandChildOpen}>open grandChildModal</Button>
+                <Button variant="outlined" onClick={handleClose}>close this</Button>
+            </Box>
         </>
     )
 }
@@ -45,8 +50,10 @@ const TestModal = () => {
     return (
         <>
             <Typography>MODAL</Typography>
-            <Button onClick={handleChildOpen}>open childModal</Button>
-            <Button onClick={handleClose}>close this</Button>
+            <Box sx={btnBoxStyle} >
+                <Button variant="outlined" sx={{mr:2}} onClick={handleChildOpen}>open childModal</Button>
+                <Button variant="outlined" onClick={handleClose}>close this</Button>
+            </Box>
         </>
     )
 }
@@ -87,8 +94,10 @@ const Board = () => {
             </Grid>
             <Grid container justifyContent="space-between">
                 총 {paging?.total || 0} 건
-                <Button variant="outlined" component={RouterLink} to="/boardForm">등록</Button>
-                <Button onClick={handleModal}>모달테스트</Button>
+                <Box>
+                    <Button variant="outlined" component={RouterLink} to="/boardForm">등록</Button>
+                    <Button variant="outlined" sx={{ml:1}} onClick={handleModal}>모달테스트</Button>
+                </Box>
             </Grid>
             <Grid container>
                 <Table>
